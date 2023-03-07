@@ -29,14 +29,38 @@
 			top: 20px;
 			right: 20px;
 			cursor: pointer;
+		#gacha-btn {
+ 			 position: absolute;
+ 			 bottom: 30px;
+ 			 left: 50%;
+  			transform: translateX(-50%);
+			font-size: 24px;
+			padding: 10px 20px;
+			 border-radius: 5px;
+			background-color: #ffcc00;
+			 color: #fff;
+			 cursor: pointer;
+				}
+		#machine 	{
+			  position: absolute;
+			  top: 50%;
+			  left: 50%;
+			  transform: translate(-50%, -50%);
+			  width: 500px;
+			  height: 600px;
+			  background-image: url('machine.png');
+			  background-size: cover;
+			}
 		}
 	</style>
 </head>
 <body>
 	<div id="money">金钱：0</div>
-	<button id="gacha-btn">扭蛋</button>
 	<a href="rabbit.html"><img id="enter-game" src="enter-game.png"></a>
-
+<div id="machine">
+  <!-- 扭蛋机动画 -->
+  <button id="gacha-btn">扭蛋</button>
+</div>
 	<div id="prize">
 		<img id="prize-img" src="">
 	</div>
