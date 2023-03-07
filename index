@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>扭蛋机</title>
+	<style type="text/css">
+		#money {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			font-size: 24px;
+			font-weight: bold;
+			color: gold;
+		}
+
+		#prize {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			display: none;
+		}
+
+		#prize img {
+			max-width: 300px;
+		}
+
+		#enter-game {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div id="money">金钱：0</div>
+	<button id="gacha-btn">扭蛋</button>
+	<a href="rabbit.html"><img id="enter-game" src="enter-game.png"></a>
+
+	<div id="prize">
+		<img id="prize-img" src="">
+	</div>
+
+	<script type="text/javascript">
+		var money = 0;
+		
+		var prizeImgs = ["prize1.png", "prize2.png", "prize3.png"];
+		var cookies = document.cookie.split(";");
+for (var i = 0; i < cookies.length; i++) {
+  var cookie = cookies[i].trim();
+  if (cookie.indexOf("money=") == 0) {
+    money = parseInt(cookie.substring("money=".length, cookie.length));
+    document.getElementById("money").textContent = "金钱：" + money;
+  }
+}
+		document.cookie = "money=" + money;
+		var gachaBtn = document.getElementById("gacha-btn");
+		gachaBtn.addEventListener("click", function() {
+			if (money >= 10) {
+				money -= 10;
+				document.getElementById("money").textContent = "金钱：" + money;
+
+				var prizeIndex = Math.floor(Math.random() * 3);
+				var prizeImg = document.getElementById("prize-img");
+				prizeImg.src = prizeImgs[prizeIndex];
+
+				var prizeDiv = document.getElementById("prize");
+				prizeDiv.style.display = "block";
+
+				setTimeout(function() {
+					prizeDiv.style.display = "none";
+					if (prizeIndex == 0) {
+						money += 50;
+					} else if (prizeIndex == 1) {
+						money += 100;
+					} else {
+						money += 200;
+					}
+					document.getElementById("money").textContent = "金钱：" + money;
+				}, 2000);
+			} else {
+				alert("金钱不足！");
+			}
+		});
+	</script>
+</body>
+</html>
