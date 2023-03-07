@@ -145,12 +145,13 @@ moveRabbit();
 
 // 点击兔子
 rabbitDiv.addEventListener("click", function() {
-  if (!rabbitDiv.classList.contains("hit")) {
-    rabbitDiv.classList.add("hit");
-    rabbitCount++;
-    setTimeout(function() {
-      rabbitDiv.classList.remove("hit");
-    }, 100);
+if (!rabbitDiv.classList.contains("hit")) {
+  rabbitCount++;
+  rabbitDiv.classList.add("hit");
+  setTimeout(function() {
+    rabbitDiv.classList.remove("hit");
+  }, 100);
+}
 	// 增加金钱数并保存到cookie
 money += 5;
 document.getElementById("money").textContent = "金钱：" + money;
