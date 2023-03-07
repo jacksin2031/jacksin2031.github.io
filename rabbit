@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>打兔子</title>
+	<style type="text/css">
+		#money {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			font-size: 24px;
+			font-weight: bold;
+			color: gold;
+		}
+
+		#countdown {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			font-size: 24px;
+			font-weight: bold;
+			color		}
+
+		#game {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 500px;
+			height: 500px;
+			background-image: url("background.png");
+			background-size: cover;
+			border-radius: 50%;
+			overflow: hidden;
+			display: none;
+		}
+
+		#start-btn {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-size: 48px;
+			font-weight: bold;
+			background-color: yellowgreen;
+			padding: 20px;
+			border-radius: 20px;
+			cursor: pointer;
+		}
+
+		#rabbit {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100px;
+			height: 100px;
+			background-image: url("rabbit.jpg");
+			background-size: cover;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: absolute;
+		}
+
+  .hit {
+    background-image: url("rabbit.jpg");
+  }
+
+  .hidden {
+    display: none;
+  }
+
+		#exit-game {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div id="money">金钱：0</div>
+	<div id="countdown">倒计时：30s</div>
+	<button id="start-btn">开始游戏</button>
+	<div id="game">
+		<div id="rabbit"></div>
+	</div>
+	<a href="gacha.html"><img id="exit-game" src="exit-game.png"></a>
+
+	<script type="text/javascript">
+		var money = 0;
+		var countdown = 30;
+		var rabbitCount = 0;
+
+		var countdownDiv = document.getElementById("countdown");
+		var startBtn = document.getElementById("start-btn");
+		var gameDiv = document.getElementById("game");
+		var rabbitDiv = document.getElementById("rabbit");
+
+		var intervalId;
+
+// 读取或设置cookies
+function getCookie(cname) {
+var name = cname + "=";
+var decodedCookie = decodeURIComponent(document.cookie);
+var ca = decodedCookie.split(';');
+for(var i = 0; i <ca.length; i++) {
+var c = ca[i];
+while (c.charAt(0) == ' ') {
+c = c.substring(1);
+}
+if (c.indexOf(name) == 0) {
+return c.substring(name.length, c.length);
+}
+}
+return "";
+}
+
+function setCookie(cname, cvalue, exdays) {
+var d = new Date();
+d.setTime(d.getTime() + (exdays2460601000));
+var expires = "expires="+ d.toUTCString();
+document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+// 从cookie中读取金钱数
+var money = parseInt(getCookie("money"));
+if (isNaN(money)) {
+money = 0;
+}
+document.getElementById("money").textContent = "金钱：" + money;
+
+		startBtn.addEventListener("click", function() {
+			startBtn.style.display = "none";
+			gameDiv.style.display = "block";
+			countdownDiv.style.display = "block";
+			randomPos();
+// 兔子移动
+function moveRabbit() {
+  setTimeout(function() {
+    randomPos();
+    moveRabbit();
+  }, Math.floor(Math.random() * 700) + 300);
+}
+
+moveRabbit();
+
+// 点击兔子
+rabbitDiv.addEventListener("click", function() {
+  if (!rabbitDiv.classList.contains("hit")) {
+    rabbitDiv.classList.add("hit");
+    rabbitCount++;
+    setTimeout(function() {
+      rabbitDiv.classList.remove("hit");
+    }, 100);
+	// 增加金钱数并保存到cookie
+money += 5;
+document.getElementById("money").textContent = "金钱：" + money;
+setCookie("money", money, 365);
+  }
+});
+			intervalId = setInterval(function() {
+				countdown--;
+				countdownDiv.textContent = "倒计时：" + countdown + "s";
+				if (countdown == 0) {
+					clearInterval(intervalId);
+					gameDiv.style.display = "none";
+					countdownDiv.style.display = "none";
+					if (rabbitCount > 0) {
+						alert("恭喜您打中了" + rabbitCount + "只兔子，获得了" + (5 * rabbitCount) + "金钱！");
+					} else {
+						alert("很遗憾，您没有打中任何兔子！");
+					}
+					countdown = 30;
+					rabbitCount = 0;
+					startBtn.style.display = "block";
+				}
+			}, 1000);
+		});
+		 function randomPos() {
+    var gameDiv = document.getElementById("game");
+    var rabbitDiv = document.getElementById("rabbit");
+    var maxX = gameDiv.clientWidth - rabbitDiv.clientWidth;
+    var maxY = gameDiv.clientHeight - rabbitDiv.clientHeight;
+    var randomX = Math.floor(Math.random() * maxX);
+    var randomY = Math.floor(Math.random() * maxY);
+    rabbitDiv.style.left = randomX + "px";
+    rabbitDiv.style.top = randomY + "px";
+  }
+	</script>
+</body>
+</html>
