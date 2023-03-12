@@ -3,6 +3,10 @@
 <head>
 	<title>打兔子</title>
 	<style type="text/css">
+		body {
+			background-color: beige;
+			}
+
 		#money {
 			position: absolute;
 			top: 20px;
@@ -20,68 +24,123 @@
 			font-weight: bold;
 			color		}
 
-		#game {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			width: 500px;
-			height: 500px;
-			background-image: url("background.png");
-			background-size: cover;
-			border-radius: 50%;
-			overflow: hidden;
-			display: none;
-		}
+#game {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background-image: url("background.png");
+  background-size: cover;
+  border-radius: 50%;
+  border: 5px solid black;
+  overflow: hidden;
+  display: none;
+  background-color: gray;
+  content: "V";
+  font-size: 200px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 500px;
+}
 
-		#start-btn {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			font-size: 48px;
-			font-weight: bold;
-			background-color: yellowgreen;
-			padding: 20px;
-			border-radius: 20px;
-			cursor: pointer;
-		}
+#game::after {
+  content: "5";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 500px;
+  font-weight: bold;
+  color: white;
+  animation: rainbow 4s infinite;
+  z-index: -1;
+}
 
-		#rabbit {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100px;
-			height: 100px;
-			background-image: url("rabbit.png");
-			background-size: cover;
-    transition: all 0.3s;
-    cursor: pointer;
-    position: absolute;
-		}
+@keyframes rainbow {
+            0% {
+                color: red;
+            }
+            15% {
+                color: orange;
+            }
+            30% {
+                color: yellow;
+            }
+            50% {
+                color: green;
+            }
+            65% {
+                color: blue;
+            }
+            80% {
+                color: indigo;
+            }
+            100% {
+                color: violet;
+            }
+        }
 
-  .hit {
-    background-image: url("rabbit_hit.png");
-  }
+#start-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+  background-color: #4CAF50;
+  padding: 20px;
+  border-radius: 20px;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  transition: all 0.3s ease-out;
+}
 
-  .hidden {
-    display: none;
-  }
+#start-btn:hover {
+  background-color: #3e8e41;
+  transform: translate(-50%, -50%) scale(1.1);
+}
 
+#rabbit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  background-image: url("rabbit.png");
+  background-size: cover;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: absolute;
+ 
+}
+
+.hidden {
+  display: none;
+}
 		#exit-game {
 			position: absolute;
-			top: 20px;
+			top: 80px;
 			right: 20px;
+			width: 200px;
+			height: 200px;
 			cursor: pointer;
 		}
 	</style>
 </head>
 <body>
-	<div id="money">金钱：0</div>
-	<div id="countdown">倒计时：30s</div>
-	<button id="start-btn">开始游戏</button>
+	<div id="money">コイン：0</div>
+	<div id="countdown">カウントダウン：30s</div>
+	<button id="start-btn">スタート</button>
 	<div id="game">
-		<div id="rabbit"></div>
+		<div id="rabbit">
+		</div>
 	</div>
 	<a href="index.html"><img id="exit-game" src="exit-game.png"></a>
 
@@ -94,8 +153,9 @@
 		var startBtn = document.getElementById("start-btn");
 		var gameDiv = document.getElementById("game");
 		var rabbitDiv = document.getElementById("rabbit");
-
 		var intervalId;
+
+
 
 // 读取或设置cookies
 function getCookie(cname) {
@@ -126,7 +186,7 @@ var money = parseInt(getCookie("money"));
 if (isNaN(money)) {
 money = 0;
 }
-document.getElementById("money").textContent = "金钱：" + money;
+document.getElementById("money").textContent = "コイン：" + money;
 
 		startBtn.addEventListener("click", function() {
 			startBtn.style.display = "none";
@@ -145,30 +205,37 @@ moveRabbit();
 
 // 点击兔子
 rabbitDiv.addEventListener("click", function() {
-if (!rabbitDiv.classList.contains("hit")) {
-  rabbitCount++;
-  rabbitDiv.classList.add("hit");
-  setTimeout(function() {
-    rabbitDiv.classList.remove("hit");
-  }, 100);
-}
-	// 增加金钱数并保存到cookie
-money += 5;
-document.getElementById("money").textContent = "金钱：" + money;
-setCookie("money", money, 365);
+  if (!rabbitDiv.classList.contains("hit")) {
+    rabbitDiv.classList.add("hit");
+    rabbitCount++;	
+
+    // 兔子变小
+    rabbitDiv.style.transform = "scale(0.5)";
+
+    setTimeout(function() {
+      rabbitDiv.classList.remove("hit");
+
+      // 兔子恢复原大小
+      rabbitDiv.style.transform = "scale(1)";
+    }, 100);
+
+    // 增加金钱数并保存到cookie
+    money += 5;
+    document.getElementById("money").textContent = "コイン：" + money;
+    setCookie("money", money, 365);
   }
 });
 			intervalId = setInterval(function() {
 				countdown--;
-				countdownDiv.textContent = "倒计时：" + countdown + "s";
+				countdownDiv.textContent = "カウントダウン：" + countdown + "s";
 				if (countdown == 0) {
 					clearInterval(intervalId);
 					gameDiv.style.display = "none";
 					countdownDiv.style.display = "none";
 					if (rabbitCount > 0) {
-						alert("恭喜您打中了" + rabbitCount + "只兔子，获得了" + (5 * rabbitCount) + "金钱！");
+					alert("おめでとうございます！" + rabbitCount + "匹のウサギを倒し、" + (5 * rabbitCount) + "のコインを獲得しました！");
 					} else {
-						alert("很遗憾，您没有打中任何兔子！");
+					alert("残念ながら、うさぎさんを倒すできませんでした。");
 					}
 					countdown = 30;
 					rabbitCount = 0;

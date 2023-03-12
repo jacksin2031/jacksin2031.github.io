@@ -3,109 +3,183 @@
 <head>
 	<title>扭蛋机</title>
 	<style type="text/css">
-		#money {
-			position: absolute;
-			top: 20px;
-			left: 20px;
-			font-size: 24px;
-			font-weight: bold;
-			color: gold;
-		}
+	  body {
+    background-color: beige;
+  }
 
-		#prize {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			display: none;
-		}
-
-		#prize img {
-			max-width: 300px;
-		}
-
-		#enter-game {
-			position: absolute;
-			top: 20px;
-			right: 20px;
-			cursor: pointer;
-		#gacha-btn {
- 			 position: absolute;
- 			 bottom: 30px;
- 			 left: 50%;
-  			transform: translateX(-50%);
-			font-size: 24px;
-			padding: 10px 20px;
-			 border-radius: 5px;
-			background-color: #ffcc00;
-			 color: #fff;
-			 cursor: pointer;
-				}
-		#machine 	{
-			  position: absolute;
-			  top: 50%;
-			  left: 50%;
-			  transform: translate(-50%, -50%);
-			  width: 500px;
-			  height: 600px;
-			  background-image: url('machine.png');
-			  background-size: cover;
+	#money {
+		position: absolute;
+		top: 20px;
+		left: 20px;
+		font-size: 24px;
+		font-weight: bold;
+		color: gold;
+		text-shadow: 2px 2px 2px black;
 			}
-		}
-	</style>
-</head>
-<body>
-	<div id="money">金钱：0</div>
-	<a href="rabbit.html"><img id="enter-game" src="enter-game.png"></a>
-<div id="machine">
-  <!-- 扭蛋机动画 -->
-  <button id="gacha-btn">扭蛋</button>
-</div>
-	<div id="prize">
-		<img id="prize-img" src="">
-	</div>
+				
+	#prize {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		display: none;
+		animation: blink 2s linear infinite;
+			}		
 
-	<script type="text/javascript">
-		var money = 0;
-		
-		var prizeImgs = ["prize1.jpg", "prize2.jpg", "prize3.jpg"];
-		var cookies = document.cookie.split(";");
-for (var i = 0; i < cookies.length; i++) {
-  var cookie = cookies[i].trim();
-  if (cookie.indexOf("money=") == 0) {
-    money = parseInt(cookie.substring("money=".length, cookie.length));
-    document.getElementById("money").textContent = "金钱：" + money;
+	#prize p {
+		position: relative;
+		transform: translate(10%, -100%);
+		text-align: center;
+		padding: 30px;
+		color: pink;
+		font-size: 34px;
+		text-shadow: 2px 2px 2px black;
+		z-index: 1;
+		opacity: 1;
+			}
+
+	#prize img {
+		max-width: 300px;
+		margin-bottom: 00px;
+		z-index: 1;
+		opacity: 1;
+	}
+
+	#enter-game {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		width: 200px;
+		height: 200px;
+		cursor: pointer;
+	}
+
+	#gacha-machine {
+		position: relative;
+		width: 500px;
+		height: 500px;
+		margin: 0	auto;
+		transform: translate(0, 20%);
+		background-image: url("gacha-machine.png");
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+		cursor: pointer;
+	}
+
+	#lever {
+		position: absolute;
+		top: 60%;
+		left: 61%;
+		width: 60px;
+		height: 60px;
+		background-image: url("lever.png");
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+		cursor: pointer;
+	}
+
+	@keyframes pullLever {
+		z-index: -1;
+		0% {
+			transform: rotate(-45deg);
+		}
+		50% {
+			transform: rotate(-90deg);
+		}
+		100% {
+			transform: rotate(0deg);
+		}
+	}
+@keyframes blink {
+  0% {
+    box-shadow: 0 0 100px gold, 0 0 200px yellow, 0 0 300px orange, 0 0 400px red, 0 0 700px white;
+  }
+  50% {
+    box-shadow: 1 0 100px gold, 0 0 200px yellow, 0 0 300px orange, 0 0 400px red, 0 0 1000px white; /* 改變鐳射特效 */
+  }
+  100% {
+    box-shadow: 0 0 100px gold, 0 0 200px yellow, 0 0 300px orange, 0 0 400px red, 0 0 700px white;
   }
 }
-		document.cookie = "money=" + money;
-		var gachaBtn = document.getElementById("gacha-btn");
-		gachaBtn.addEventListener("click", function() {
-			if (money >= 10) {
-				money -= 10;
-				document.getElementById("money").textContent = "金钱：" + money;
+</style>
+</head>
+<body>
+	<div id="money">コイン：0</div>
+	<div id="gacha-machine">
+		<div id="lever"></div>
+	</div>
+	<a href="rabbit.html"><img id="enter-game" src="enter-game.png"></a>
+	<div id="prize">
+  <p style="position: absolute; z-index: 1;">おめでとう❣</p>
+		<img id="prize-img" src="">
+	</div>
+	<div style="position: fixed; bottom: 20px; right: 20px;color: pink;font-size: 23px;text-shadow: 2px 2px 2px black">
+<p>ガチャするのために50コインが必要です。</p><p>
+ガチャマシンを押って有栖ちゃんの写真が出てできます。</p><p>
+右上にゲームするとコインを収集できます。</p>
+</div>
+<script type="text/javascript">
+var money = 100;
+	
+var prizeImgs = [];
 
-				var prizeIndex = Math.floor(Math.random() * 3);
-				var prizeImg = document.getElementById("prize-img");
-				prizeImg.src = prizeImgs[prizeIndex];
+for (var i = 1; i <= 24; i++) {
+  prizeImgs.push("prize (" + i + ").jpg");
+}
+var cookies = document.cookie.split(";");
+for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i].trim();
+    if (cookie.indexOf("money=") == 0) {
+        money = parseInt(cookie.substring("money=".length, cookie.length));
+        document.getElementById("money").textContent = "コイン：" + money;
+    }
+}
+document.cookie = "money=" + money;
 
-				var prizeDiv = document.getElementById("prize");
-				prizeDiv.style.display = "block";
+var gachaMachine = document.getElementById("gacha-machine");
+gachaMachine.addEventListener("click", function() {
+pullLever();
+    setTimeout(function() {
+        gacha();
+    }, 2000);
+});
 
-				setTimeout(function() {
-					prizeDiv.style.display = "none";
-					if (prizeIndex == 0) {
-						money += 50;
-					} else if (prizeIndex == 1) {
-						money += 100;
-					} else {
-						money += 200;
-					}
-					document.getElementById("money").textContent = "金钱：" + money;
-				}, 2000);
-			} else {
-				alert("金钱不足！");
-			}
-		});
+var lever = document.getElementById("lever");
+lever.addEventListener("click", function() {
+    pullLever();
+    setTimeout(function() {
+        gacha()
+    }, 2000);
+});
+
+function pullLever() {
+    var lever = document.getElementById("lever");
+    lever.style.animation = "pullLever 2s ease forwards";
+    lever.addEventListener("animationend", function() {
+        lever.style.animation = "";
+    });
+}
+
+function gacha() {
+    var prizeIndex = Math.floor(Math.random() * prizeImgs.length);
+    var prizeImg = prizeImgs[prizeIndex];
+    var prizeDiv = document.getElementById("prize");
+    var prizeImgElem = document.getElementById("prize-img");
+    prizeImgElem.src = prizeImg;
+ if (money >= 50) {
+    money -= 50;
+    document.getElementById("money").textContent = "コイン：" + money;
+    prizeImgElem.src = prizeImg;
+    prizeDiv.style.display = "block";
+	prizeImgElem.addEventListener("click", function() {
+	prizeDiv.style.display = "none";
+	prizeImgElem.src = "";
+	});
+} else {
+    alert("コインが足りないじゃい！");
+}}
 	</script>
 </body>
 </html>
