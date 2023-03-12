@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>打兔子</title>
+	<title>うさぎさんを捕まえる❣</title>
 	<style type="text/css">
 		body {
 			background-color: beige;
@@ -140,7 +140,7 @@
 	<div id="countdown">カウントダウン：30s</div>
 	<button id="start-btn">スタート</button>
 		<div style="position: fixed; bottom: 20px; right: 20px;color: pink;font-size: 23px;text-shadow: 2px 2px 2px black">
-<p>このゲームはうさぎさんを倒すのゲームです！ｗ</p><p>
+<p>このゲームはうさぎさんを捕まえるのゲームです！ｗ</p><p>
 スタートのあと30ｓのカウントダウンに</p><p>うさぎさんを押して50コインゲットできます。</p><p>
 右上にガチャするとコインを使用してできます。</p>
 </div>
@@ -239,9 +239,9 @@ rabbitDiv.addEventListener("click", function() {
 					gameDiv.style.display = "none";
 					countdownDiv.style.display = "none";
 					if (rabbitCount > 0) {
-					alert("おめでとうございます！" + rabbitCount + "匹のウサギを倒し、" + (5 * rabbitCount) + "のコインを獲得しました！");
+					alert("おめでとうございます！" + rabbitCount + "匹のうさぎさんを捕まえた、" + (5 * rabbitCount) + "のコインを獲得しました！");
 					} else {
-					alert("残念ながら、うさぎさんを倒すできませんでした。");
+					alert("残念ながら、うさぎさんを捕まえできませんでした。");
 					}
 					countdown = 30;
 					rabbitCount = 0;
